@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Astronomi</title>
+    <style>
+        /* Setup Dasar & Background Hitam Polos */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Hitam Polos */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container Chat */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Bubble Chat */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .ai-message {
+            background-color: #1a1a1a;
+            color: #00d4ff;
+            align-self: flex-start;
+            border: 1px solid #333;
+        }
+
+        .user-message {
+            background-color: #0056b3;
+            color: white;
+            align-self: flex-end;
+        }
+
+        /* Area Input */
+        .input-area {
+            padding: 20px;
+            background-color: #0a0a0a;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #222;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid #444;
+            background: #111;
+            color: white;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            background-color: #00d4ff;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00a3c4;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="chat-container">
+        <div class="message ai-message">
+            Halo! Saya AI Astronomi. Kamu bisa tanya apa saja tentang alam semesta, seperti "Apa itu Matahari?", "Lubang Hitam", atau "Galaksi".
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Tanya sesuatu tentang bintang..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">Kirim</button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('userInput');
+
+        // Database Jawaban Sederhana (Simulasi AI)
+        const responses = {
+            "halo": "Halo juga! Siap menjelajah luar angkasa hari ini?",
+            "matahari": "Matahari adalah bintang di pusat Tata Surya kita. Suhu intinya mencapai 15 juta derajat Celcius!",
+            "lubang hitam": "Lubang hitam atau Black Hole adalah tempat di ruang angkasa di mana gravitasi menarik begitu kuat sehingga cahaya pun tidak bisa keluar.",
+            "mars": "Mars sering disebut Planet Merah karena besi oksida di permukaannya. Hari di Mars hampir sama dengan di Bumi, yaitu 24,6 jam.",
+            "galaksi": "Kita tinggal di galaksi Bima Sakti (Milky Way). Ada miliaran galaksi lain di alam semesta yang teramati.",
+            "bulan": "Bulan adalah satelit alami Bumi. Jarak rata-ratanya sekitar 384.400 km dari kita.",
+            "default": "Maaf, pengetahuan saya terbatas. Coba tanya tentang Matahari, Mars, atau Lubang Hitam!"
+        };
+
+        function sendMessage() {
+            const text = userInput.value.trim().toLowerCase();
+            if (text === "") return;
+
+            // Tambah chat user ke layar
+            appendMessage(userInput.value, 'user-message');
+            userInput.value = "";
+
+            // Simulasi loading AI
+            setTimeout(() => {
+                let aiResponse = responses["default"];
+                
+                // Cek keyword sederhana
+                for (let key in responses) {
+                    if (text.includes(key)) {
+                        aiResponse = responses[key];
+                        break;
+                    }
+                }
+                
+                appendMessage(aiResponse, 'ai-message');
+            }, 600);
+        }
+
+        function appendMessage(text, className) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${className}`;
+            msgDiv.innerText = text;
+            chatContainer.appendChild(msgDiv);
+            
+            // Auto scroll ke bawah
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
